@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы</title>
+    <style>
+        #reviews-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .review {
+            margin-bottom: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Отзывы</h1>
+    <form id="review-form">
+        <textarea id="review-input" rows="4" cols="50" placeholder="Введите ваш отзыв"></textarea><br>
+        <button type="submit">Добавить отзыв</button>
+    </form>
+    <div id="reviews-container"></div>
+
+    <script>
+        const initialData = [
+            {
+                product: "Apple iPhone 13",
+                reviews: [
+                    {
+                        id: "1",
+                        text: "Отличный телефон! Батарея держится долго.",
+                    },
+                    {
+                        id: "2",
+                        text: "Камера супер, фото выглядят просто потрясающе.",
+                    },
+                ],
+            },
+            {
+                product: "Samsung Galaxy Z Fold 3",
+                reviews: [
+                    {
+                        id: "3",
+                        text: "Интересный дизайн, но дорогой.",
+                    },
+                ],
+            },
+            {
+                product: "Sony PlayStation 5",
+                reviews: [
+                    {
+                        id: "4",
+                        text: "Люблю играть на PS5, графика на высоте.",
+                    },
+                ],
+            },
+        ];
+
+        const reviewForm = document.getElementById('review-form');
+        const reviewInput = document.getElementById('review-input');
+        const reviewsContainer = document.getElementById('reviews-container');
+
+        reviewForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const reviewText = reviewInput.value.trim();
+            if (reviewText.length < 50 || reviewText.length > 500) {
+                alert('Отзыв должен содержать от 50 до 500 символов.');
+                return;
+            }
+
+            const reviewElement = document.createElement('div');
+            reviewElement.textContent = reviewText;
+            reviewElement.classList.add('review');
+            reviewsContainer.appendChild(reviewElement);
+
+            reviewInput.value = '';
+        });
+
+        // Предварительно добавляем начальные отзывы
+        initialData.forEach(product => {
+            product.reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.textContent = review.text;
+                reviewElement.classList.add('review');
+                reviewsContainer.appendChild(reviewElement);
+            });
+        });
+    </script>
+</body>
+
+</html>
