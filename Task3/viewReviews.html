@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр отзывов</title>
+</head>
+<body>
+    <h1>Просмотр отзывов</h1>
+    <ul id="product-list"></ul>
+
+    <script>
+        function displayProducts() {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+
+            reviews.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item.product;
+                listItem.style.cursor = 'pointer';
+                listItem.addEventListener('click', () => displayReviews(item.product));
+                productList.appendChild(listItem);
+            });
+        }
+
+        function displayReviews(product) {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            const productReviews = reviews.filter(item => item.product === product);
+            const reviewList = document.createElement('ul');
+            reviewList.innerHTML = '';
+
+            productReviews.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item.review;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Удалить';
+                deleteButton.addEventListener('click', () => deleteReview(product, item.review));
+
+                listItem.appendChild(deleteButton);
+                reviewList.appendChild(listItem);
+            });
+
+            document.body.appendChild(reviewList);
+        }
+
+        function deleteReview(product, review) {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            const updatedReviews = reviews.filter(item => !(item.product === product && item.review === review));
+            localStorage.setItem('reviews', JSON.stringify(updatedReviews));
+            alert('Отзыв удален!');
+            location.reload(); // Перезагружаем страницу для обновления списка отзывов
+        }
+
+        displayProducts();
+    </script>
+</body>
+</html>
